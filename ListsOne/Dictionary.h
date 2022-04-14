@@ -10,22 +10,28 @@ template< typename K, typename V, typename Cmp = std::greater< K > >
 class Dictionary
 {
 public:
-    Dictionary(std::string name = "dictionary");
+    Dictionary() = default;
+    Dictionary(const std::string& name);
 
     Dictionary& operator=(const Dictionary& right);
     V operator[](K key);
     friend std::ostream& operator<<(std::ostream& out, Dictionary< K, V, Cmp >& value)
     {
-        out << "{";
-        for (size_t i = 0; i < value.getCount(); i++)
+        if (value.getCount() == 0)
+        {
+            out << "<EMPTY>";
+            return out;
+        }
+
+        out << value.m_Name << " ";
+        for (int i = 0; i < value.getCount(); i++)
         {
             out << value.m_Data[i];
             if (i != value.getCount() - 1)
             {
-                out << ", ";
+                out << " ";
             }
         }
-        out << "}";
 
         return out;
     }
@@ -34,23 +40,28 @@ public:
 
     void push(K key, V value);
 
-    pair< K, V >& findPair(K& key); // +
-    bool has(const K& key); // +
+    pair< K, V >& findPair(const K& key);
+    bool has(const K& key);
     void sort();
 
-    V get(K key); // +
-    void pop(K key); // +
+    pair< K, V > get(K key);
+    void pop(K key);
+
+    Dictionary getUnion(const Dictionary& right);
+    Dictionary getIntersect(const Dictionary& right);
+    Dictionary getComplement(const Dictionary& right);
 
 private:
     forward_list< pair< K, V > > m_Data;
-    std::string m_Name;
+    std::string m_Name = "dictionary";
 };
-template< typename K, typename V, typename Cmp = std::less< K > >
+template< typename K, typename V, typename Cmp = std::greater< K > >
 using dictionary = Dictionary< K, V, Cmp >;
 
 template< typename K, typename V, typename Cmp >
-Dictionary< K, V, Cmp >::Dictionary(std::string name)
+Dictionary< K, V, Cmp >::Dictionary(const std::string& name)
 {
+    std::cout << "Cum " << name << std::endl;
     m_Data = forward_list< pair< K, V > >();
     m_Name = name;
 }
@@ -74,7 +85,7 @@ void Dictionary< K, V, Cmp >::push(K key, V value)
 }
 
 template< typename K, typename V, typename Cmp >
-V Dictionary< K, V, Cmp >::get(K key)
+pair< K, V > Dictionary< K, V, Cmp >::get(K key)
 {
     return findPair(key);
 }
@@ -113,7 +124,7 @@ void Dictionary<K, V, Cmp>::sort()
 }
 
 template<typename K, typename V, typename Cmp>
-pair<K, V>& Dictionary<K, V, Cmp>::findPair(K& key)
+pair<K, V>& Dictionary<K, V, Cmp>::findPair(const K& key)
 {
     for (size_t i = 0; i < m_Data.getCount(); i++)
     {
@@ -146,6 +157,31 @@ void Dictionary< K, V, Cmp >::pop(K key)
 }
 
 template<typename K, typename V, typename Cmp>
+Dictionary< K, V, Cmp > Dictionary< K, V, Cmp >::getUnion(const Dictionary& right)
+{
+    Dictionary temp(right);
+    std::cout << "Пук " << temp << std::endl;
+    for (int i = 0; i < getCount(); i++)
+    {
+        temp.push(m_Data[i].first(), m_Data[i].second());
+    }
+
+    return temp;
+}
+
+template<typename K, typename V, typename Cmp>
+inline Dictionary<K, V, Cmp> Dictionary<K, V, Cmp>::getIntersect(const Dictionary& right)
+{
+    // TODO: вставьте здесь оператор return
+}
+
+template<typename K, typename V, typename Cmp>
+inline Dictionary<K, V, Cmp> Dictionary<K, V, Cmp>::getComplement(const Dictionary& right)
+{
+    // TODO: вставьте здесь оператор return
+}
+
+template<typename K, typename V, typename Cmp>
 inline Dictionary<K, V, Cmp>& Dictionary<K, V, Cmp>::operator=(const Dictionary& right)
 {
     m_Data = right.m_Data;
@@ -156,6 +192,6 @@ inline Dictionary<K, V, Cmp>& Dictionary<K, V, Cmp>::operator=(const Dictionary&
 template<typename K, typename V, typename Cmp>
 V Dictionary<K, V, Cmp>::operator[](K key)
 {
-    return get(key);
+    return get(key).second();
 }
 #endif

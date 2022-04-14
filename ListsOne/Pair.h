@@ -11,7 +11,7 @@ public:
     Pair& operator=(const Pair& right);
     friend std::ostream& operator<<(std::ostream& out, Pair< K, V >& value)
     {
-        out << value.first() << ": " << value.second();
+        out << value.first() << " " << value.second();
 
         return out;
     }

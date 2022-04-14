@@ -1,7 +1,7 @@
-#include <stdexcept>
-
 #ifndef FORWARDLIST_H
 #define FORWARDLIST_H
+#include <stdexcept>
+#include <iostream>
 template< typename T >
 class ForwardList
 {

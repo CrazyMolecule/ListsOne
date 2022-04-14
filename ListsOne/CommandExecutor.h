@@ -12,13 +12,10 @@ class CommandExecutor
 public:
     CommandExecutor()
     {
-        //TO DO: сделать friend class с этими всеми командами или нет?.. тогда как получить доступ к словарю со словарями (тому, что главный)?
-        reg_command("print", print);
-        reg_command("complement", complement);
-        reg_command("intersect", intersect);
-        reg_command("union", myunion);
-
-        //MAYBE TO DO: m_Dictionaries;
+        reg_command("print", &CommandExecutor::print);
+        reg_command("complement", &CommandExecutor::complement);
+        reg_command("intersect", &CommandExecutor::intersect);
+        reg_command("union", &CommandExecutor::myUnion);
     }
 
     void readFile(std::istream& input)
@@ -31,7 +28,8 @@ public:
                 forward_list< std::string > data = splitString(line, " ");
                 std::string dictName = data[0];
                 dictionary< int, std::string > temp(dictName);
-                for (int i = 0; i < temp.getCount() / 2; i++)
+                data.popFront();
+                while (data.getCount() > 0)
                 {
                     temp.push(std::stoi(data[0]), data[1]);
                     data.popFront();
@@ -56,7 +54,8 @@ public:
                 {
                     void (CommandExecutor:: * operation)(forward_list< std::string >);
                     operation = m_RegisteredCommands[currentCommand.getOperation()];
-                    operation(currentCommand.getArgs());
+                    forward_list< std::string > args = currentCommand.getArgs();
+                    (this->*operation)(args);
                 }
             }
         }
@@ -68,24 +67,35 @@ public:
         {
             throw std::length_error("Invalid number of command arguments.");
         }
-        if (!"главный словарь содержит все имена из аргументов")
+        if (!m_Dictionaries.has(args[0]))
         {
             throw std::invalid_argument("Invalid argument.");
         }
 
-        std::cout << "По имени словаря из аргумента вывести норм словарь" << std::endl;
+        dictionary < int, std::string > toPrint = m_Dictionaries[args[0]];
+        std::cout << toPrint << std::endl;
     }
 
     void complement(forward_list< std::string > args)
     {
+
     }
 
     void intersect(forward_list< std::string > args)
     {
     }
 
-    void myunion(forward_list< std::string > args)
+    void myUnion(forward_list< std::string > args)
     {
+        std::string newDataSet = args[0];
+        std::string dataSetOne = args[1];
+        std::string dataSetTwo = args[2];
+
+        dictionary< int, std::string > temp(newDataSet);
+        temp = m_Dictionaries[dataSetOne];
+        temp.getUnion(m_Dictionaries[dataSetTwo]);
+
+        m_Dictionaries.push(newDataSet, temp);
     }
 
 private:
