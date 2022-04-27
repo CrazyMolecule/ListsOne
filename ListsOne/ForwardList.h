@@ -34,6 +34,7 @@ namespace bavykin
         void clear() noexcept; // +
 
         void sort();
+
         template< class Compare >
         void sort(Compare comp);
 
@@ -213,9 +214,9 @@ namespace bavykin
         {
             for (iterator j = begin(); j != end(); ++j)
             {
-                if (std::less< T >(*j, *(j++)))
+                if (*j < *(++j))
                 {
-                    std::swap(*j, *(j++));
+                    std::swap(*j, *(++j));
                 }
             }
         }

@@ -55,14 +55,14 @@ template< class T >
 std::shared_ptr< T > ListIterator< T >::operator->() const
 {
     assert(m_Current != nullptr);
-    return &(m_Current->m_Data);
+    return std::make_shared< T >(m_Current->m_Data);
 }
 
 template< class T >
 ListIterator< T >& ListIterator< T >::operator++()
 {
     assert(m_Current != nullptr);
-    m_Current = m_Current->m_Data;
+    m_Current = m_Current->m_PointerNext;
     return *this;
 }
 
