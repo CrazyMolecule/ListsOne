@@ -235,7 +235,7 @@ namespace bavykin
         {
             for (iterator j = toSort.begin(); j != toSort.end() - 1; ++iter)
             {
-                if (Cmp{}(*j.first, *(j + 1).first))
+                if (comp(*j.first, *(j + 1).first))
                 {
                     std::swap(*j, *(j + 1));
                 }
