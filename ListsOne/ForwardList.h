@@ -50,25 +50,25 @@ namespace bavykin
     using forward_list = ForwardList< T >;
 
     template< typename T >
-    ForwardList< T >::iterator ForwardList< T >::begin()
+    typename ForwardList< T >::iterator ForwardList< T >::begin()
     {
         return iterator(m_Head);
     }
 
     template< typename T >
-    ForwardList< T >::iterator ForwardList< T >::end()
+    typename ForwardList< T >::iterator ForwardList< T >::end()
     {
         return iterator();
     }
 
     template< typename T >
-    ForwardList< T >::const_iterator ForwardList< T >::begin() const
+    typename ForwardList< T >::const_iterator ForwardList< T >::begin() const
     {
         return const_iterator(m_Head);
     }
 
     template< typename T >
-    ForwardList< T >::const_iterator ForwardList< T >::end() const
+    typename ForwardList< T >::const_iterator ForwardList< T >::end() const
     {
         return const_iterator();
     }
@@ -209,40 +209,32 @@ namespace bavykin
     template< typename T >
     void ForwardList< T >::sort()
     {
-        forward_list< T > toSort = m_Data;
-
-        for (iterator i = toSort.begin(); i != toSort.end() - 1; ++i)
+        for (iterator i = begin(); i != end(); ++i)
         {
-            for (iterator j = toSort.begin(); j != toSort.end() - 1; ++j)
+            for (iterator j = begin(); j != end(); ++j)
             {
-                if (std::greater< T >(*j.first, *(j + 1).first))
+                if (std::less< T >(*j, *(j++)))
                 {
-                    std::swap(*j, *(j + 1));
+                    std::swap(*j, *(j++));
                 }
             }
         }
-
-        m_Data = toSort;
     }
 
     template< typename T >
     template< class Compare >
     void ForwardList< T >::sort(Compare comp)
     {
-        forward_list< T > toSort = m_Data;
-
-        for (iterator i = toSort.begin(); i != toSort.end() - 1; ++iter)
+        for (iterator i = begin(); i != end(); ++i)
         {
-            for (iterator j = toSort.begin(); j != toSort.end() - 1; ++iter)
+            for (iterator j = begin(); j != end(); ++j)
             {
-                if (comp(*j.first, *(j + 1).first))
+                if (comp(*j, *(j++)))
                 {
-                    std::swap(*j, *(j + 1));
+                    std::swap(*j, *(j++));
                 }
             }
         }
-
-        m_Data = toSort;
     }
 
     template< typename T >

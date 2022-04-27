@@ -2,6 +2,7 @@
 #define LISTITERATOR_H
 #include <assert.h>
 #include <memory>
+#include "ListNode.h"
 
 template<class T>
 class ListIterator : public std::iterator< std::forward_iterator_tag, T >
