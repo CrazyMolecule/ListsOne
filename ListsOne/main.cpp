@@ -1,32 +1,36 @@
 ﻿#include <iostream>
 #include <fstream>
-#include "Dictionary.h"
-#include "ForwardList.h"
-#include "Pair.h"
 #include "CommandExecutor.h"
+
+using namespace bavykin;
+
+const int ARGUMENT_COUNT_REQUIRED = 2;
 
 int main(int argc, char* argv[])
 {
-    std::ifstream fileInput;
-
-    if (argc != 2)
+  std::ifstream dictionaryDataSource;
+  try
+  {
+    if (argc == ARGUMENT_COUNT_REQUIRED)
     {
-        std::cout << "Error" << std::endl;
-    }
+      dictionaryDataSource.open(argv[1]);
 
-    //fileInput.open(argv[1]);
-    fileInput.open("a.txt");
-
-    if (!fileInput.is_open())
-    {
+      if (!dictionaryDataSource.is_open())
+      {
         std::cerr << "The input file was not opened.";
         return 1;
+      }
+
+      CommandExecutor().run(dictionaryDataSource);
     }
-
-    /*dictionary< int, int > temp("Name");
-    temp.push(1, 3);
-    temp.push(2, 4);
-    std::cout << temp << std::endl;*/
-
-    CommandExecutor().run(fileInput);
+    else
+    {
+      throw std::runtime_error("Invalid number of arguments.");
+    }
+  }
+  catch (const std::exception& exception)
+  {
+    std::cerr << exception.what() << std::endl;
+    return 2;
+  }
 }

@@ -139,16 +139,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Command.cpp" />
+    <ClCompile Include="CommandExecutor.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Pair.cpp" />
+    <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ForwardList.h" />
     <ClInclude Include="Dictionary.h" />
     <ClInclude Include="CommandExecutor.h" />
     <ClInclude Include="Command.h" />
+    <ClInclude Include="ListNode.h" />
+    <ClInclude Include="ListIterator.h" />
     <ClInclude Include="Utils.h" />
-    <ClInclude Include="Pair.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,20 +1,8 @@
-#pragma once
-
+#ifndef UTILS_H
+#define UTILS_H
 #include "ForwardList.h"
 
-static forward_list< std::string > splitString(const std::string& str, const std::string& delimiter)
-{
-    forward_list< std::string > strings;
+using namespace bavykin;
 
-    std::string::size_type pos = 0;
-    std::string::size_type prev = 0;
-    while ((pos = str.find(delimiter, prev)) != std::string::npos)
-    {
-        strings.pushBack(str.substr(prev, pos - prev));
-        prev = pos + 1;
-    }
-
-    strings.pushBack(str.substr(prev));
-
-    return strings;
-}
+forward_list< std::string > splitString(const std::string& str, const std::string& delimiter);
+#endif
