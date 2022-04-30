@@ -6,7 +6,7 @@
 
 namespace bavykin
 {
-  template< typename K, typename V, typename Cmp = std::greater< K > >
+  template< typename K, typename V, typename Cmp = std::less< K > >
   class Dictionary
   {
   public:
@@ -51,7 +51,7 @@ namespace bavykin
     forward_list< std::pair< K, V > > m_Data;
     std::string m_Name;
   };
-  template< typename K, typename V, typename Cmp = std::greater< K > >
+  template< typename K, typename V, typename Cmp = std::less< K > >
   using dictionary = Dictionary< K, V, Cmp >;
 
   template< typename K, typename V, typename Cmp >

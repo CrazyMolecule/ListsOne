@@ -35,7 +35,7 @@ namespace bavykin
 
         void sort();
 
-        template< class Compare >
+        template< class Compare = std::less< T > >
         void sort(Compare comp);
 
         iterator begin();
@@ -230,9 +230,9 @@ namespace bavykin
         {
             for (iterator j = begin(); j != end(); ++j)
             {
-                if (comp(*j, *(j++)))
+                if (comp(*j, *(++j)))
                 {
-                    std::swap(*j, *(j++));
+                    std::swap(*j, *(++j));
                 }
             }
         }
