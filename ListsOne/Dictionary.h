@@ -50,6 +50,8 @@ namespace bavykin
   private:
     forward_list< std::pair< K, V > > m_Data;
     std::string m_Name;
+
+    void sort();
   };
   template< typename K, typename V, typename Cmp = std::less< K > >
   using dictionary = Dictionary< K, V, Cmp >;
@@ -89,7 +91,7 @@ namespace bavykin
     }
     m_Data.pushFront(std::pair< K, V >(key, value));
 
-    m_Data.sort();
+    sort();
   }
 
   template< typename K, typename V, typename Cmp >
@@ -110,6 +112,25 @@ namespace bavykin
     {
       return false;
     }
+  }
+
+  template< typename K, typename V, typename Cmp >
+  void Dictionary< K, V, Cmp >::sort()
+  {
+      forward_list< std::pair< K, V > > tempData = m_Data;
+
+      for (int i = 0; i < m_Data.getCount() - 1; i++)
+      {
+          for (int j = 0; j < m_Data.getCount() - i - 1; j++)
+          {
+              if (Cmp{}(tempData[j].first, tempData[j + 1].first))
+              {
+                  std::swap(tempData[j], tempData[j + 1]);
+              }
+          }
+      }
+
+      m_Data = tempData;
   }
 
   template< typename K, typename V, typename Cmp >

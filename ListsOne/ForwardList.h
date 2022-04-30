@@ -33,15 +33,10 @@ namespace bavykin
         void insertAfter(const T& data, int index);
         void clear() noexcept; // +
 
-        void sort();
-
-        template< class Compare = std::less< T > >
-        void sort(Compare comp);
-
         iterator begin();
         iterator end();
-        const_iterator begin() const;
-        const_iterator end() const;
+        const_iterator cbegin() const;
+        const_iterator cend() const;
 
     private:
         size_t m_Size; // TO DO: удалить походу...
@@ -63,13 +58,13 @@ namespace bavykin
     }
 
     template< typename T >
-    typename ForwardList< T >::const_iterator ForwardList< T >::begin() const
+    typename ForwardList< T >::const_iterator ForwardList< T >::cbegin() const
     {
         return const_iterator(m_Head);
     }
 
     template< typename T >
-    typename ForwardList< T >::const_iterator ForwardList< T >::end() const
+    typename ForwardList< T >::const_iterator ForwardList< T >::cend() const
     {
         return const_iterator();
     }
@@ -204,37 +199,6 @@ namespace bavykin
         while (m_Size)
         {
             popFront();
-        }
-    }
-
-    template< typename T >
-    void ForwardList< T >::sort()
-    {
-        for (iterator i = begin(); i != end(); ++i)
-        {
-            for (iterator j = begin(); j != end(); ++j)
-            {
-                if (*j < *(++j))
-                {
-                    std::swap(*j, *(++j));
-                }
-            }
-        }
-    }
-
-    template< typename T >
-    template< class Compare >
-    void ForwardList< T >::sort(Compare comp)
-    {
-        for (iterator i = begin(); i != end(); ++i)
-        {
-            for (iterator j = begin(); j != end(); ++j)
-            {
-                if (comp(*j, *(++j)))
-                {
-                    std::swap(*j, *(++j));
-                }
-            }
         }
     }
 
