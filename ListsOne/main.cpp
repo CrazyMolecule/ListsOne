@@ -2,12 +2,22 @@
 #include <fstream>
 #include "CommandExecutor.h"
 
+#include "ForwardList.h"
+
 using namespace bavykin;
 
 const int ARGUMENT_COUNT_REQUIRED = 2;
 
 int main(int argc, char* argv[])
 {
+    forward_list< int > my_list;
+
+    my_list.pushFront(2);
+
+    std::cout << *my_list.cbegin() << std::endl;
+
+
+    /////////////////////
   std::ifstream dictionaryDataSource;
   try
   {

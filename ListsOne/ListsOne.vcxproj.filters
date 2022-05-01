@@ -44,7 +44,7 @@
     <ClInclude Include="Command.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="ListIterator.h">
+    <ClInclude Include="ListIterators.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="ListNode.h">

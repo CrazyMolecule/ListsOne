@@ -15,26 +15,8 @@ namespace bavykin
 
         Dictionary& operator=(const Dictionary& right);
         V operator[](K key) const;
-        friend std::ostream& operator<<(std::ostream& out, Dictionary< K, V, Cmp >& value)
-        {
-            if (value.size() == 0)
-            {
-                out << "<EMPTY>";
-                return out;
-            }
-
-            out << value.m_Name << " ";
-            for (size_t i = 0; i < value.size(); i++)
-            {
-                out << value.m_Data[i].first << " " << value.m_Data[i].second;
-                if (i != value.size() - 1)
-                {
-                    out << " ";
-                }
-            }
-
-            return out;
-        }
+        template< typename K, typename V, typename Cmp >
+        friend std::ostream& operator<<(std::ostream& out, const Dictionary< K, V, Cmp >& value);
 
         size_t size() const;
         void tryEmplace(K key, V value);
@@ -64,6 +46,28 @@ namespace bavykin
     };
     template< typename K, typename V, typename Cmp = std::less< K > >
     using dictionary = Dictionary< K, V, Cmp >;
+
+    template< typename K, typename V, typename Cmp >
+    std::ostream& operator<<(std::ostream& out, const Dictionary< K, V, Cmp >& value)
+    {
+        if (value.size() == 0)
+        {
+            out << "<EMPTY>";
+            return out;
+        }
+
+        out << value.m_Name << " ";
+        for (size_t i = 0; i < value.size(); i++)
+        {
+            out << value.m_Data[i].first << " " << value.m_Data[i].second;
+            if (i != value.size() - 1)
+            {
+                out << " ";
+            }
+        }
+
+        return out;
+    }
 
     template< typename K, typename V, typename Cmp >
     Dictionary< K, V, Cmp >::Dictionary(const std::string& name)
@@ -145,11 +149,11 @@ namespace bavykin
     template< typename K, typename V, typename Cmp >
     std::pair< K, V >& Dictionary< K, V, Cmp >::findPair(const K& key) const
     {
-        for (std::pair< K, V > element : m_Data)
+        for (size_t i = 0; i < m_Data.getCount(); i++)
         {
-            if (element.first == key)
+            if (m_Data[i].first == key)
             {
-                return element;
+                return m_Data[i];
             }
         }
 
