@@ -145,11 +145,11 @@ namespace bavykin
     template< typename K, typename V, typename Cmp >
     std::pair< K, V >& Dictionary< K, V, Cmp >::findPair(const K& key) const
     {
-        for (size_t i = 0; i < m_Data.getCount(); i++)
+        for (std::pair< K, V > element : m_Data)
         {
-            if (m_Data[i].first == key)
+            if (element.first == key)
             {
-                return m_Data[i];
+                return element;
             }
         }
 
