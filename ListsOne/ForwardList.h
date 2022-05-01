@@ -4,7 +4,7 @@
 #include <iostream>
 #include <memory>
 #include "ListNode.h"
-#include "ListIterators.h"
+#include "ListIterator.h"
 
 namespace bavykin
 {
@@ -13,8 +13,8 @@ namespace bavykin
     {
     public:
         using Node = ListNode< T >;
-        using iterator = Iterator< T >;
-        using const_iterator = ConstIterator< const T >;
+        using iterator = ListIterator< T >;
+        using const_iterator = ListIterator< const T >;
 
         ForwardList();
         ForwardList(const ForwardList& right);
@@ -26,7 +26,7 @@ namespace bavykin
 
         void popFront(); // +
         void removeAt(size_t index);
-        
+
         void pushFront(const T& data); // +
         void pushBack(const T& data);
         void insertAfter(const T& data, int index);
