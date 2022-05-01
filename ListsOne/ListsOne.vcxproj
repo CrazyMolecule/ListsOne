@@ -150,7 +150,7 @@
     <ClInclude Include="CommandExecutor.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="ListNode.h" />
-    <ClInclude Include="ListIterator.h" />
+    <ClInclude Include="ListIterators.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
