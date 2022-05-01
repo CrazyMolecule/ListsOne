@@ -4,52 +4,33 @@
 #include <memory>
 #include "ListNode.h"
 
-template< class T >
+template<class T>
 class ListIterator : public std::iterator< std::forward_iterator_tag, T >
 {
 public:
     using Node = ListNode< T >;
+    using Iterator = ListIterator< T >;
 
-    ListIterator() = default;
-    ListIterator(std::shared_ptr< Node > pointer) = default;
-    ListIterator(const ListIterator< T >&) = default;
-    ListIterator< T >& operator=(const ListIterator< T >&) = default;
-    bool operator==(const ListIterator< T >&) const;
-    bool operator!=(const ListIterator< T >&) const;
-    ListIterator< T >& operator++();
-    ListIterator< T > operator++(int);
+    ListIterator();
+    ListIterator(std::shared_ptr< Node > pointer);
+    ListIterator(const Iterator&) = default;
+    Iterator& operator=(const Iterator&) = default;
+    bool operator==(const Iterator&) const;
+    bool operator!=(const Iterator&) const;
+    T& operator*() const;
+    std::shared_ptr< T > operator->() const;
+    Iterator& operator++();
+    Iterator operator++(int);
 
-protected:
+private:
     std::shared_ptr< Node > m_Current;
 };
 
 template< class T >
-class ConstIterator : public ListIterator< T >
-{
-public:
-    using Node = ListNode< T >;
-
-    ConstIterator() = default;
-    ConstIterator(std::shared_ptr< Node > pointer);
-    ConstIterator(const ConstIterator< T >&) = default;
-    ConstIterator< T >& operator=(const ConstIterator< T >&) = default;
-    const T& operator*() const;
-    const std::shared_ptr< T > operator->() const;
-};
+ListIterator< T >::ListIterator() : m_Current(nullptr) {}
 
 template< class T >
-class Iterator : public ListIterator< T >
-{
-public:
-    using Node = ListNode< T >;
-
-    Iterator();
-    Iterator(std::shared_ptr< Node > pointer);
-    Iterator(const Iterator< T >&) = default;
-    Iterator< T >& operator=(const Iterator< T >&) = default;
-    T& operator*() const;
-    std::shared_ptr< T > operator->() const;
-};
+ListIterator< T >::ListIterator(std::shared_ptr< Node > pointer) : m_Current(pointer) {}
 
 template< class T >
 bool ListIterator< T >::operator==(const ListIterator< T >& other) const

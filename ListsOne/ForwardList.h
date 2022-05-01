@@ -25,7 +25,7 @@ namespace bavykin
         size_t getCount() const; // TO DO: удалить походу...
 
         void popFront(); // +
-        void removeAt(size_t index);
+        void removeAt(int index);
 
         void pushFront(const T& data); // +
         void pushBack(const T& data);
@@ -153,7 +153,7 @@ namespace bavykin
     }
 
     template< typename T >
-    void ForwardList< T >::removeAt(size_t index)
+    void ForwardList< T >::removeAt(int index)
     {
         if (index < 0 || index >= m_Size)
         {
