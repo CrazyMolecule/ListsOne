@@ -25,7 +25,6 @@ namespace bavykin
         size_t getCount() const; // TO DO: удалить походу...
 
         void popFront(); // +
-        void popBack();
         void removeAt(int index);
 
         void pushFront(const T& data); // +
@@ -101,17 +100,6 @@ namespace bavykin
         m_Head = m_Head->m_PointerNext;
 
         m_Size--;
-    }
-
-    template< typename T >
-    void ForwardList< T >::popBack()
-    {
-        if (m_Size == 0)
-        {
-            throw std::length_error("The element cannot be pulled out.");
-        }
-
-        removeAt(m_Size - 1);
     }
 
     template< typename T >

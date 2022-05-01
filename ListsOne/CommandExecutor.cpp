@@ -23,11 +23,11 @@ namespace bavykin
         splittedCommandLine.popFront();
         while (splittedCommandLine.getCount() > 0)
         {
-          fillingDictionary.push(std::stoi(splittedCommandLine[0]), splittedCommandLine[1]);
+          fillingDictionary.tryEmplace(std::stoi(splittedCommandLine[0]), splittedCommandLine[1]);
           splittedCommandLine.popFront();
           splittedCommandLine.popFront();
         }
-        m_Dictionaries.push(dictionaryName, fillingDictionary);
+        m_Dictionaries.tryEmplace(dictionaryName, fillingDictionary);
       }
     }
   }
@@ -44,7 +44,7 @@ namespace bavykin
         try
         {
           Command currentCommand(line);
-          if (m_RegisteredCommands.has(currentCommand.getOperation()))
+          if (m_RegisteredCommands.contains(currentCommand.getOperation()))
           {
             void (CommandExecutor:: * operation)(forward_list< std::string >);
             operation = m_RegisteredCommands[currentCommand.getOperation()];
@@ -68,7 +68,7 @@ namespace bavykin
   {
     for (size_t i = 1; i < args.getCount(); i++)
     {
-      if (!m_Dictionaries.has(args[i]))
+      if (!m_Dictionaries.contains(args[i]))
       {
         throw std::invalid_argument("Invalid argument.");
       }
@@ -82,7 +82,7 @@ namespace bavykin
       throw std::invalid_argument("Invalid number of command arguments.");
     }
 
-    if (!m_Dictionaries.has(args[0]))
+    if (!m_Dictionaries.contains(args[0]))
     {
       throw std::invalid_argument("Invalid argument.");
     }
@@ -108,7 +108,7 @@ namespace bavykin
     newDict = m_Dictionaries[dataSetOne];
     newDict.changeName(newDataSet);
 
-    m_Dictionaries.push(newDataSet, newDict.getComplement(m_Dictionaries[dataSetTwo]));
+    m_Dictionaries.tryEmplace(newDataSet, newDict.getComplement(m_Dictionaries[dataSetTwo]));
   }
 
   void CommandExecutor::intersect(forward_list< std::string > args)
@@ -128,7 +128,7 @@ namespace bavykin
     newDict = m_Dictionaries[dataSetOne];
     newDict.changeName(newDataSet);
 
-    m_Dictionaries.push(newDataSet, newDict.getIntersect(m_Dictionaries[dataSetTwo]));
+    m_Dictionaries.tryEmplace(newDataSet, newDict.getIntersect(m_Dictionaries[dataSetTwo]));
   }
 
   void CommandExecutor::myUnion(forward_list< std::string > args)
@@ -148,11 +148,11 @@ namespace bavykin
     newDict = m_Dictionaries[dataSetOne];
     newDict.changeName(newDataSet);
 
-    m_Dictionaries.push(newDataSet, newDict.getUnion(m_Dictionaries[dataSetTwo]));
+    m_Dictionaries.tryEmplace(newDataSet, newDict.getUnion(m_Dictionaries[dataSetTwo]));
   }
 
   void CommandExecutor::reg_command(std::string command, void (CommandExecutor::* function)(forward_list< std::string >))
   {
-    m_RegisteredCommands.push(command, function);
+    m_RegisteredCommands.tryEmplace(command, function);
   }
 }
