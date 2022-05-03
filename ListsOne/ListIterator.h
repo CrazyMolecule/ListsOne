@@ -1,15 +1,17 @@
 #ifndef LISTITERATOR_H
 #define LISTITERATOR_H
+#include "ListNode.h"
 #include <assert.h>
 #include <memory>
-#include "ListNode.h"
 
-template<class T>
+template < class T, bool isConst = false >
 class ListIterator : public std::iterator< std::forward_iterator_tag, T >
 {
 public:
   using Node = ListNode< T >;
-  using Iterator = ListIterator< T >;
+  using Iterator = ListIterator< T, isConst >;
+  using returntypePtr_t = std::conditional_t< isConst, std::shared_ptr< const T >, std::shared_ptr< T > >;
+  using returntype_t = std::conditional_t< isConst, const T, T >;
 
   ListIterator();
   ListIterator(std::shared_ptr< Node > pointer);
@@ -17,8 +19,8 @@ public:
   Iterator& operator=(const Iterator&) = default;
   bool operator==(const Iterator&) const;
   bool operator!=(const Iterator&) const;
-  T& operator*() const;
-  std::shared_ptr< T > operator->() const;
+  returntype_t operator*() const;
+  returntypePtr_t operator->() const;
   Iterator& operator++();
   Iterator operator++(int);
 
@@ -26,50 +28,50 @@ private:
   std::shared_ptr< Node > m_Current;
 };
 
-template< class T >
-ListIterator< T >::ListIterator() : m_Current(nullptr) {}
+template < class T, bool isConst >
+ListIterator< T, isConst >::ListIterator() : m_Current(nullptr) {}
 
-template< class T >
-ListIterator< T >::ListIterator(std::shared_ptr< Node > pointer) : m_Current(pointer) {}
+template < class T, bool isConst >
+ListIterator< T, isConst >::ListIterator(std::shared_ptr< Node > pointer) : m_Current(pointer) {}
 
-template< class T >
-bool ListIterator< T >::operator==(const ListIterator< T >& other) const
+template < class T, bool isConst >
+bool ListIterator< T, isConst >::operator==(const ListIterator< T, isConst >& other) const
 {
   return m_Current == other.m_Current;
 }
 
-template< class T >
-bool ListIterator< T >::operator!=(const ListIterator< T >& other) const
+template < class T, bool isConst >
+bool ListIterator< T, isConst >::operator!=(const ListIterator< T, isConst >& other) const
 {
   return !(*this == other);
 }
 
-template< class T >
-T& ListIterator< T >::operator*() const
+template < class T, bool isConst >
+typename ListIterator< T, isConst >::returntype_t ListIterator< T, isConst >::operator*() const
 {
   assert(m_Current != nullptr);
   return m_Current->m_Data;
 }
 
-template< class T >
-std::shared_ptr< T > ListIterator< T >::operator->() const
+template < class T, bool isConst >
+typename ListIterator< T, isConst >::returntypePtr_t ListIterator< T, isConst >::operator->() const
 {
   assert(m_Current != nullptr);
   return std::make_shared< T >(m_Current->m_Data);
 }
 
-template< class T >
-ListIterator< T >& ListIterator< T >::operator++()
+template < class T, bool isConst >
+ListIterator< T, isConst >& ListIterator< T, isConst >::operator++()
 {
   assert(m_Current != nullptr);
   m_Current = m_Current->m_PointerNext;
   return *this;
 }
 
-template< class T >
-ListIterator< T > ListIterator< T >::operator++(int)
+template < class T, bool isConst >
+ListIterator< T, isConst > ListIterator< T, isConst >::operator++(int)
 {
-  ListIterator< T > temp(*this);
+  ListIterator< T, isConst > temp(*this);
   operator++();
   return temp;
 }

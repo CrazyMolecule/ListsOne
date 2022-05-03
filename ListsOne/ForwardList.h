@@ -1,36 +1,33 @@
 #ifndef FORWARD_LIST_H
 #define FORWARD_LIST_H
-#include <stdexcept>
+#include "ListIterator.h"
+#include "ListNode.h"
 #include <iostream>
 #include <memory>
-#include "ListNode.h"
-#include "ListIterator.h"
+#include <stdexcept>
 
 namespace bavykin
 {
-  template< typename T >
+  template < typename T >
   class ForwardList
   {
   public:
     using Node = ListNode< T >;
-    using iterator = ListIterator< T >;
-    using const_iterator = ListIterator< const T >;
+    using iterator = ListIterator< T, false >;
+    using const_iterator = ListIterator< T, true >;
 
     ForwardList();
     ForwardList(const ForwardList& right);
 
     ForwardList& operator=(const ForwardList& right);
-    T& operator[] (size_t index) const;
+    T& operator[](size_t index) const;
 
-    size_t getCount() const; // TO DO: удалить походу...
-
-    void popFront(); // +
+    size_t getCount() const;
+    void popFront();
     void removeAt(size_t index);
-
-    void pushFront(const T& data); // +
+    void pushFront(const T& data);
     void pushBack(const T& data);
-    void insertAfter(const T& data, int index);
-    void clear() noexcept; // +
+    void clear() noexcept;
 
     iterator begin();
     iterator end();
@@ -38,49 +35,51 @@ namespace bavykin
     const_iterator cend() const;
 
   private:
-    size_t m_Size; // TO DO: удалить походу...
+    size_t m_Size;
     std::shared_ptr< Node > m_Head;
   };
-  template< typename T >
+  template < typename T >
   using forward_list = ForwardList< T >;
 
-  template< typename T >
+  template < typename T >
   typename ForwardList< T >::iterator ForwardList< T >::begin()
   {
-    return ListIterator< T >(m_Head);
+    return iterator(m_Head);
   }
 
-  template< typename T >
+  template < typename T >
   typename ForwardList< T >::iterator ForwardList< T >::end()
   {
-    return ListIterator< T >();
+    return iterator();
   }
 
-  template< typename T >
+  template < typename T >
   typename ForwardList< T >::const_iterator ForwardList< T >::cbegin() const
   {
-    return ListIterator< const T >(m_Head);
+    return const_iterator(m_Head);
   }
 
-  template< typename T >
+  template < typename T >
   typename ForwardList< T >::const_iterator ForwardList< T >::cend() const
   {
-    return ListIterator< const T >();
+    return const_iterator();
   }
 
-  template< typename T >
+  template < typename T >
   size_t ForwardList< T >::getCount() const
   {
     return m_Size;
   }
 
-  template< typename T >
-  ForwardList< T >::ForwardList() : m_Size(0), m_Head(nullptr) {}
+  template < typename T >
+  ForwardList< T >::ForwardList() : m_Size(0), m_Head(nullptr)
+  {}
 
-  template< typename T >
-  ForwardList< T >::ForwardList(const ForwardList& right) : m_Size(right.m_Size), m_Head(right.m_Head) {}
+  template < typename T >
+  ForwardList< T >::ForwardList(const ForwardList& right) : m_Size(right.m_Size), m_Head(right.m_Head)
+  {}
 
-  template< typename T >
+  template < typename T >
   ForwardList< T >& ForwardList< T >::operator=(const ForwardList& right)
   {
     m_Size = right.m_Size;
@@ -89,7 +88,7 @@ namespace bavykin
     return *this;
   }
 
-  template< typename T >
+  template < typename T >
   void ForwardList< T >::popFront()
   {
     if (m_Size == 0)
@@ -102,14 +101,14 @@ namespace bavykin
     m_Size--;
   }
 
-  template< typename T >
+  template < typename T >
   void ForwardList< T >::pushFront(const T& data)
   {
     m_Head = std::shared_ptr< Node >(new Node(data, m_Head));
     m_Size++;
   }
 
-  template< typename T >
+  template < typename T >
   void ForwardList< T >::pushBack(const T& data)
   {
     if (m_Head == nullptr)
@@ -130,29 +129,7 @@ namespace bavykin
     m_Size++;
   }
 
-  template< typename T >
-  void ForwardList< T >::insertAfter(const T& data, int index)
-  {
-    if (index == 0)
-    {
-      pushFront(data);
-    }
-    else
-    {
-      std::shared_ptr< Node > previous = m_Head;
-
-      for (size_t i = 0; i < index - 1; i++)
-      {
-        previous = previous->m_PointerNext;
-      }
-
-      previous->m_PointerNext = std::shared_ptr< Node >(new Node(data, previous->m_PointerNext));
-
-      m_Size++;
-    }
-  }
-
-  template< typename T >
+  template < typename T >
   void ForwardList< T >::removeAt(size_t index)
   {
     if (index < 0 || index >= m_Size)
@@ -181,7 +158,7 @@ namespace bavykin
     }
   }
 
-  template< typename T >
+  template < typename T >
   void ForwardList< T >::clear() noexcept
   {
     while (m_Size)
@@ -190,7 +167,7 @@ namespace bavykin
     }
   }
 
-  template< typename T >
+  template < typename T >
   T& ForwardList< T >::operator[](size_t index) const
   {
     if (index < 0 || index >= m_Size)
